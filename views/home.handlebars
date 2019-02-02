@@ -1,7 +1,7 @@
 <h1>My Trip Journal</h1>
 
  <div class="container">
- 	<button class="btn btn-success" style="background-color:blue; margin-left:90%;" data-toggle="modal" data-target="#myModalAdd">Add Trip</button>
+ 	<button class="btn btn-success" style="background-color:blue;" data-toggle="modal" data-target="#myModalAdd">Add Trip</button>
     <table class="table table-bordered" id="listtable">
       <thead>
         <tr>
@@ -11,19 +11,64 @@
         </tr>
       </thead>
       <tbody>
-         {{#each results}}
+         
         <tr>
-          <td>{{ id }}</td>
-          <td>{{ name }}</td>
+          <td>1</td>
+          <td>Holiday</td>
           <td>
-            <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ id }}" data-product_name="{{ name }}">Edit</a>
+            <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ id }}" data-name="{{ name }}">Edit</a>
             <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ id }}">Delete</a>
+            <a href="javascript:void(0);" class="btn btn-sm btn-info" data-id="{{ id }}" data-name="{{ name }}">Route</a>
           </td>
         </tr>
-        {{/each}}
+        <tr>
+          <td>1</td>
+          <td>Holiday</td>
+          <td>
+            <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ id }}" data-name="{{ name }}">Edit</a>
+            <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ id }}">Delete</a>
+            <a href="javascript:void(0);" class="btn btn-sm btn-info" data-id="{{ id }}" data-name="{{ name }}">Route</a>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Holiday</td>
+          <td>
+            <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ id }}" data-name="{{ name }}">Edit</a>
+            <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ id }}">Delete</a>
+            <a href="javascript:void(0);" class="btn btn-sm btn-info" data-id="{{ id }}" data-name="{{ name }}">Route</a>
+          </td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Holiday</td>
+          <td>
+            <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ id }}" data-name="{{ name }}">Edit</a>
+            <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ id }}">Delete</a>
+            <a href="javascript:void(0);" class="btn btn-sm btn-info" data-id="{{ id }}" data-name="{{ name }}">Route</a>
+          </td>
+        </tr>
+        
       </tbody>
     </table>
   </div>
+
+<!-- Get All Trip -->
+<script type="text/javascript">
+	$('#listtable').ready(function(){
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+        var start = $(this).data('start');
+        var destination = $(this).data('destination');
+        var trip_code = $(this).data('trip_code');
+        $('#listtable').table('show');
+        $('.name').val(name);
+        $('.start').val(start);
+        $('.destination').val(destination);
+        $('.trip_code').val(trip_code);
+        $('.id').val(id);
+  	});
+</script>
  
     <!-- Modal Add Trip-->
       <form action="/add" method="post">
@@ -128,20 +173,49 @@
     $(document).ready(function(){
             //tampilkan data ke modal untuk edit
       $('#mytable').on('click','.edit',function(){
-        var product_id = $(this).data('id');
-        var product_name = $(this).data('product_name');
-        var product_price = $(this).data('product_price');
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+        var start = $(this).data('start');
+        var destination = $(this).data('destination');
+        var trip_code = $(this).data('trip_code');
         $('#EditModal').modal('show');
-        $('.product_name').val(product_name);
-        $('.price').val(product_price);
-        $('.product_id').val(product_id);
+        $('.name').val(name);
+        $('.start').val(start);
+        $('.destination').val(destination);
+        $('.trip_code').val(trip_code);
+        $('.id').val(id);
       });
             //tampilkan modal hapus record
             $('#mytable').on('click','.delete',function(){
-        var product_id = $(this).data('id');
+        var id = $(this).data('id');
         $('#DeleteModal').modal('show');
-        $('.product_id2').val(product_id);
+        $('.id').val(id);
       });
  
     });
 </script>
+
+<div id="map" style="height:400px; width:100%"></div>
+	<script type="text/javascript">
+		function initMap() {
+			var options = {
+				zoom:5,
+				center:{lat:-7.797, lng: 110.370}
+			}
+
+			var map = new google.maps.Map(document.getElementById('map'), options);
+
+			var marker = new google.maps.Marker({
+				position:{lat:-7.797, lng: 110.370},
+				map:map,
+
+			});
+			var marker1 = new google.maps.Marker({
+				position:{lat:-8.650, lng: 115.216},
+				map:map,
+			});
+		}	
+	</script>
+	<script async defer
+    	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6RKb0Y_vdn0lJc2DTDYZOsaipOxq4tYM&callback=initMap">
+    </script>
