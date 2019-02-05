@@ -1,77 +1,37 @@
-<h1>My Trip Journal</h1>
+<h1 style="text-align: center;">My Trip Journal</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <h1>Trip List</h1>
+      <button class="btn btn-primary" data-toggle="modal" data-target="#myModalAdd" style="margin-left: 75%">Add Trip</button>
+      <p></p>
+      <table class="table table-bordered" id="listtable">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each trips}}
+          <tr>
+            <td>{{trip_code}}</td>
+            <td>{{trip_name}}</td>
+            <td>
+              <form id="delete-form" action="/delete/{{ id }}?_method=DELETE" method="post">
+                <a href="/{{id}}/edit" class="btn btn-sm btn-info edit" onclick="" data-id="{{ id }}" data-name="{{ trip_name }}" data-toggle="modal" data-target="#EditModal">Edit</a>
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                <button class="btn btn-sm btn-info" onclick="" data-id="{{ id }}" data-name="{{ trip_name }}">Rute</button>
+              </form>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
 
- <div class="container">
- 	<button class="btn btn-success" style="background-color:blue;" data-toggle="modal" data-target="#myModalAdd">Add Trip</button>
-    <table class="table table-bordered" id="listtable">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-         
-        <tr>
-          <td>1</td>
-          <td>Holiday</td>
-          <td>
-            <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ id }}" data-name="{{ name }}">Edit</a>
-            <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ id }}">Delete</a>
-            <a href="javascript:void(0);" class="btn btn-sm btn-info" data-id="{{ id }}" data-name="{{ name }}">Route</a>
-          </td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Holiday</td>
-          <td>
-            <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ id }}" data-name="{{ name }}">Edit</a>
-            <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ id }}">Delete</a>
-            <a href="javascript:void(0);" class="btn btn-sm btn-info" data-id="{{ id }}" data-name="{{ name }}">Route</a>
-          </td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Holiday</td>
-          <td>
-            <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ id }}" data-name="{{ name }}">Edit</a>
-            <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ id }}">Delete</a>
-            <a href="javascript:void(0);" class="btn btn-sm btn-info" data-id="{{ id }}" data-name="{{ name }}">Route</a>
-          </td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>Holiday</td>
-          <td>
-            <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ id }}" data-name="{{ name }}">Edit</a>
-            <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ id }}">Delete</a>
-            <a href="javascript:void(0);" class="btn btn-sm btn-info" data-id="{{ id }}" data-name="{{ name }}">Route</a>
-          </td>
-        </tr>
-        
-      </tbody>
-    </table>
-  </div>
-
-<!-- Get All Trip -->
-<script type="text/javascript">
-	$('#listtable').ready(function(){
-        var id = $(this).data('id');
-        var name = $(this).data('name');
-        var start = $(this).data('start');
-        var destination = $(this).data('destination');
-        var trip_code = $(this).data('trip_code');
-        $('#listtable').table('show');
-        $('.name').val(name);
-        $('.start').val(start);
-        $('.destination').val(destination);
-        $('.trip_code').val(trip_code);
-        $('.id').val(id);
-  	});
-</script>
- 
-    <!-- Modal Add Trip-->
-      <form action="/add" method="post">
+      <!-- Modal Add Trip-->
+    <form action="/" method="post">
         <div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
          <div class="modal-dialog" role="document">
            <div class="modal-content">
@@ -80,24 +40,27 @@
                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                  <span aria-hidden="true">&times;</span>
                </button>
-             </div>
-             <div class="modal-body">
-               <div class="form-group">
-                   <input type="text" name="name" class="form-control" placeholder="Name" required>
                </div>
- 
-               <div class="form-group">
-                   <input type="text" name="start" class="form-control" placeholder="Start" required>
+               <div class="modal-body">
+                 <div class="form-group">
+                     <input type="text" name="trip_code" id="trip_code" class="form-control" placeholder="Code" required>
+                 </div>
+                 <div class="form-group">
+                     <input type="text" name="trip_name" id="trip_name" class="form-control" placeholder="Trip Name" required>
+                 </div>
+                 <div class="form-group">
+                     <input type="text" name="start_lat" id="start_lat" class="form-control" placeholder="Start Latitude" required>
+                 </div>
+                 <div class="form-group">
+                     <input type="text" name="start_lng" id="start_lng" class="form-control" placeholder="Start Longitude" required>
+                 </div>
+                 <div class="form-group">
+                     <input type="text" name="end_lat" id="end_lat" class="form-control" placeholder="End Latitude" required>
+                 </div>
+                 <div class="form-group">
+                     <input type="text" name="end_lng" id="end_lng" class="form-control" placeholder="End Longitude" required>
+                 </div>
                </div>
-
-               <div class="form-group">
-                   <input type="text" name="destination" class="form-control" placeholder="Destination" required>
-               </div>
-
-               <div class="form-group">
-                   <input type="text" name="trip_code" class="form-control" placeholder="Trip Code" required>
-               </div>
-             </div>
              <div class="modal-footer">
                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                <button type="submit" class="btn btn-primary">Save</button>
@@ -106,116 +69,153 @@
          </div>
         </div>
      </form>
- 
      <!-- Modal Edit Trip-->
-   <form action="/trips/edit/:id" method="post">
-       <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Edit Trip</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                  <input type="text" name="name" class="form-control" placeholder="Name" required>
+     <form action="/{{id}}?_method=PUT" method="post">
+         <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Trip</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
- 
-              <div class="form-group">
-                  <input type="text" name="start" class="form-control" placeholder="Start" required>
-              </div>
-
-              <div class="form-group">
-                   <input type="text" name="destination" class="form-control" placeholder="Destination" required>
-               </div>
-
+              <div class="modal-body">
                <div class="form-group">
-                   <input type="text" name="trip_code" class="form-control" placeholder="Trip Code" required>
+                   <input type="text" name="trip-code" id="trip-code" class="form-control" placeholder="Code" required>
                </div>
-            </div>
-            <div class="modal-footer">
-              <input type="hidden" name="id" class="product_id">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Save</button>
+               <div class="form-group">
+                   <input type="text" name="trip-name" id="trip-name" class="form-control" placeholder="Trip Name" required>
+               </div>
+               <div class="form-group">
+                   <input type="text" name="start_lat" id="start_lat" class="form-control" placeholder="Start Latitude" required>
+               </div>
+               <div class="form-group">
+                   <input type="text" name="start_lng" id="start_lng" class="form-control" placeholder="Start Longitude" required>
+               </div>
+               <div class="form-group">
+                   <input type="text" name="end_lat" id="end_lat" class="form-control" placeholder="End Latitude" required>
+               </div>
+               <div class="form-group">
+                   <input type="text" name="end_lng" id="end_lng" class="form-control" placeholder="End Longitude" required>
+               </div>
+             </div>
+              <div class="modal-footer">
+                <input type="hidden" name="id" class="id">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
             </div>
           </div>
-        </div>
-       </div>
-  </form>
- 
-     <!-- Modal Delete Trip-->
-      <form id="add-row-form" action="/trips" method="delete">
-         <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-               <div class="modal-content">
-                   <div class="modal-header">
-                                        <h5 class="modal-title" id="myModalLabel">Delete</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                   </div>
-                   <div class="modal-body">
-                                                 <strong>Are you sure?</strong>
-                   </div>
-                   <div class="modal-footer">
-                                            <input type="hidden" name="product_id" class="form-control product_id2" required>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Delete</button>
-                   </div>
-                </div>
-            </div>
          </div>
-     </form>
+    </form>
  
+   <!-- Modal Delete Trip-->
+<!--     <form id="delete-form" action="/delete/{{ id }}?_method=DELETE" method="post">
+       <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+             <div class="modal-content">
+                 <div class="modal-header">
+                                      <h5 class="modal-title" id="myModalLabel">Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                 </div>
+                 <div class="modal-body">
+                                               <strong>Are you sure?</strong>
+                 </div>
+                 <div class="modal-footer">
+                                          <input type="hidden" name="del_id" class="form-control del_id" required>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success">Delete</button>
+                 </div>
+              </div>
+          </div>
+       </div>
+   </form>
+  -->
 
 <script src="/assets/js/bootstrap.js"></script>
-<script>
+<script src="/assets/js/jquery-3.3.1.js"></script>
+<!-- <script>
     $(document).ready(function(){
-            //tampilkan data ke modal untuk edit
-      $('#mytable').on('click','.edit',function(){
+      //tampilkan data ke modal untuk edit
+      $('#listtable').on('click','.edit',function(){
         var id = $(this).data('id');
-        var name = $(this).data('name');
-        var start = $(this).data('start');
-        var destination = $(this).data('destination');
+        var trip_name = $(this).data('trip_name');
         var trip_code = $(this).data('trip_code');
+        var start_lat = $(this).data('start_lat');
+        var start_lng = $(this).data('start_lng');
+        var end_lat = $(this).data('end_lat');
+        var end_lng = $(this).data('end_lng');
         $('#EditModal').modal('show');
-        $('.name').val(name);
-        $('.start').val(start);
-        $('.destination').val(destination);
+        $('.trip_name').val(trip_name);
         $('.trip_code').val(trip_code);
+        $('.start_lat').val(start_lat);
+        $('.start_lng').val(start_lng);
+        $('.end_lat').val(end_lat);
+        $('.end_lng').val(end_lng);
         $('.id').val(id);
       });
-            //tampilkan modal hapus record
-            $('#mytable').on('click','.delete',function(){
+        //show delete modal
+        $('#listtable').on('click','.delete',function(){
         var id = $(this).data('id');
         $('#DeleteModal').modal('show');
-        $('.id').val(id);
+        $('.del_id').val(id);
       });
- 
     });
-</script>
+</script> -->
+      <p></p>
+      <h1>Add Waypoint</h1>
+      <table class="table table-bordered" id="listtable">
+        <thead>
+          <tr>
+            <th>Trip Code</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>
+              <button class="btn btn-sm btn-info edit" onclick="" data-id="{{ id }}" data-name="{{ name }}" data-toggle="modal" data-target="#EditModal">Add</button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each waypoints}}
+          <tr>
+            <td>{{trip_code}}</td>
+            <td>{{waypoint_lat}}</td>
+            <td>{{waypoint_lat}}</td>
+            <td>
+              <button class="btn btn-sm btn-danger delete" onclick="" data-id="{{ id }}" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <div class="col-sm-8" id="map" style="height:600px; width:800px">
+      <script type="text/javascript">
+        function initMap() {
+          var options = {
+            zoom:5,
+            center:{lat:-7.797, lng: 110.370}
+          }
 
-<div id="map" style="height:400px; width:100%"></div>
-	<script type="text/javascript">
-		function initMap() {
-			var options = {
-				zoom:5,
-				center:{lat:-7.797, lng: 110.370}
-			}
+          var map = new google.maps.Map(document.getElementById('map'), options);
 
-			var map = new google.maps.Map(document.getElementById('map'), options);
+          var marker = new google.maps.Marker({
+            position:{lat:-7.797, lng: 110.370},
+            map:map,
 
-			var marker = new google.maps.Marker({
-				position:{lat:-7.797, lng: 110.370},
-				map:map,
+          });
+          var marker1 = new google.maps.Marker({
+            position:{lat:-8.650, lng: 115.216},
+            map:map,
+          });
+        } 
+      </script>
+      <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6RKb0Y_vdn0lJc2DTDYZOsaipOxq4tYM&callback=initMap">
+      </script>
+    </div>
+  </div>
+</div>
 
-			});
-			var marker1 = new google.maps.Marker({
-				position:{lat:-8.650, lng: 115.216},
-				map:map,
-			});
-		}	
-	</script>
-	<script async defer
-    	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6RKb0Y_vdn0lJc2DTDYZOsaipOxq4tYM&callback=initMap">
-    </script>
+
