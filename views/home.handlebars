@@ -70,7 +70,7 @@
         </div>
      </form>
      <!-- Modal Edit Trip-->
-     <form action="/{{id}}?_method=PATCH" method="PATCH" id="editForm">
+     <form action="/{{id}}?_method=PATCH" method="POST" id="editForm">
          <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -164,7 +164,22 @@
             .addEventListener('click', function() {
                 trips.map(trip => {
                 if(trip.id == tid){
-                    document.getElementById('editForm').action = "/:tid";
+                    document.getElementById('editForm').action = "/" + tid;
+
+                    var id = $(this).data('id');
+                    var trip_code = $(this).data('trip_code');
+                    var trip_name = $(this).data('trip_name');
+                    var start_lat = $(this).data('start_lat');
+                    var start_lng = $(this).data('start_lng');
+                    var end_lat = $(this).data('end_lat');
+                    var end_lng = $(this).data('end_lng');
+                    $('#EditModal').modal('show');
+                    $('.trip_code').val(trip_code);
+                    $('.trip_name').val(trip_name);
+                    $('.start_lat').val(start_lat);
+                    $('.start_lng').val(start_lng);
+                    $('.end_lat').val(end_lat);
+                    $('.end_lng').val(end_lng);
                 }
             });
             });
