@@ -180,53 +180,55 @@
 
 
         function calculateAndDisplayRoute(directionsService, directionsDisplay, tid) {
-                
+            
+            var startPoint = null;
+            var endPoint = null;
             var waypts = [];
-            waypoints.map(item =>
-              waypts.push({
-                location: {
-                  lat: parseFloat(item.waypoint_lat),
-                  lng: parseFloat(item.waypoint_lng)
-                }
-              }));
+
+            waypoints.map(wpoint =>
+                waypts.push({
+                    location: {
+                        lat: parseFloat(wpoint.waypoint_lat),
+                        lng: parseFloat(wpoint.waypoint_lng)
+                    }
+                })
+            );
             //console.log(waypoints);
-            var startPoint = [];
-            trips.map(item =>
-              startPoint.push({
-                location: {
-                  lat: parseFloat(item.start_lat),
-                  lng: parseFloat(item.start_lng)
-                }
-            }));
-            console.log(startPoint[0]);
+            
+            trips.map(trip => {
+                if(id == tid){
+                    startPoint = {
+                        location: {
+                            lat: parseFloat(trip.start_lat),
+                            lng: parseFloat(trip.start_lng)
+                        }
+                    };
 
-            var endPoint = [];
-            trips.map(item =>
-              endPoint.push({
-                location: {
-                  lat: parseFloat(item.end_lat),
-                  lng: parseFloat(item.end_lng)
+                    endPoint = {
+                        location: {
+                            lat: parseFloat(trip.end_lat),
+                            lng: parseFloat(trip.end_lng)
+                        }
+                    };
                 }
-              }));
-              console.log(endPoint[0]);
-
+            });
               
             directionsService.route({
-            origin: startPoint[0],
-            destination: endPoint[0],
-            //waypoints: waypts,
-            optimizeWaypoints: true,
-            travelMode: 'DRIVING'
-            }, function(response, status) {
-            if (status === 'OK') {
-                directionsDisplay.setDirections(response);
-                  var route = response.routes[0];
+                origin: startPoint,
+                destination: endPoint,
+                //waypoints: waypts,
+                optimizeWaypoints: true,
+                travelMode: 'DRIVING'
+            },  function(response, status) {
+                if (status === 'OK') {
+                    directionsDisplay.setDirections(response);
+                        var route = response.routes[0];
                 } else {
-                  window.alert('Directions request failed due to ' + status);
+                    window.alert('Directions request failed due to ' + status);
                 }
             });
         }
-        } 
+
       </script>
       <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6RKb0Y_vdn0lJc2DTDYZOsaipOxq4tYM&callback=initMap">
