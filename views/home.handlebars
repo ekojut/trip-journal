@@ -30,7 +30,7 @@
         </tbody>
       </table>
 
-      <!-- Modal Add Trip-->
+    <!-- Modal Add Trip-->
     <form action="/" method="post">
         <div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
          <div class="modal-dialog" role="document">
@@ -109,29 +109,6 @@
           </div>
          </div>
     </form>
- 
-   <!-- Modal Delete Trip-->
-<!--     <form id="delete-form" action="/delete/{{ id }}?_method=DELETE" method="post">
-       <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-             <div class="modal-content">
-                 <div class="modal-header">
-                                      <h5 class="modal-title" id="myModalLabel">Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                 </div>
-                 <div class="modal-body">
-                                               <strong>Are you sure?</strong>
-                 </div>
-                 <div class="modal-footer">
-                                          <input type="hidden" name="del_id" class="form-control del_id" required>
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-success">Delete</button>
-                 </div>
-              </div>
-          </div>
-       </div>
-   </form>
-  -->
 
 <script src="/assets/js/bootstrap.js"></script>
 <script src="/assets/js/jquery-3.3.1.js"></script>
@@ -155,24 +132,25 @@
         $('.end_lng').val(end_lng);
         $('.id').val(id);
       });
-        //show delete modal
-        $('#listtable').on('click','.delete',function(){
-        var id = $(this).data('id');
-        $('#DeleteModal').modal('show');
-        $('.del_id').val(id);
-      });
-    });
 </script> -->
       <p></p>
       <h1>Add Waypoint</h1>
       <table class="table table-bordered" id="listtable">
         <thead>
           <tr>
-            <th>Trip Code</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
             <th>
-              <button class="btn btn-sm btn-info edit" onclick="" data-id="{{ id }}" data-name="{{ name }}" data-toggle="modal" data-target="#EditModal">Add</button>
+              <input type="text" name="trip-code" id="trip-code" class="form-control" placeholder="Code" required>
+            </th>
+            <th>
+              <input type="text" name="waypoint_lat" id="waypoint_lat" class="form-control" placeholder="Latitude" required>
+            </th>
+            <th>
+              <input type="text" name="waypoint_lng" id="waypoint_lng" class="form-control" placeholder="Longitude" required>
+            </th>
+            <th>
+              <form action="/waypoint" method="post">
+                <button type="submit" class="btn btn-sm btn-info">Add</button>
+              </form>
             </th>
           </tr>
         </thead>
@@ -181,9 +159,11 @@
           <tr>
             <td>{{trip_code}}</td>
             <td>{{waypoint_lat}}</td>
-            <td>{{waypoint_lat}}</td>
+            <td>{{waypoint_lng}}</td>
             <td>
-              <button class="btn btn-sm btn-danger delete" onclick="" data-id="{{ id }}" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+              <form action="/waypoint/{{id}}?_method=DELETE" method="post">
+                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+              </form>
             </td>
           </tr>
           {{/each}}

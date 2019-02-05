@@ -136,51 +136,24 @@ router.delete('/delete/:id', (req, res) =>{
 	}
 });
 
-
-//Get all routes
-router.get('/routes', (req, res) =>{
-	mysqlConnection.query('select * from routes',(err, rows, fields)=>{
-		if(!err)
-			res.send(rows);
-		else
-			console.log(err);
-	});
-});
-
-//Get routes by trip
-router.get('/routes/:trip_code', (req, res) =>{
-	mysqlConnection.query('select * from routes where trip_code = ?',[req.params.trip_code],(err, rows, fields)=>{
-		if(!err)
-			res.send(rows);
-		else
-			console.log(err);
-	});
-});
-
-//Delete a route
-router.delete('/routes/:route_id', (req, res) =>{
-	mysqlConnection.query('delete from routes where route_id = ?',[req.params.route_id],(err, rows, fields)=>{
-		if(!err)
-			res.send('Deleted.');
-		else
-			console.log(err);
-	});
-});
-
-//Add a route
-router.get('/routes/add', (req, res)=> {
-	let data = {route_name:req.query.route_name, trip_code:req.query.trip_code, latitude:req.query.latitude, longitude:req.query.longitude};
-	let sql = 'insert into routes set ?';
-	mysqlConnection.query(sql, data, (err, result)=> {
-		if (!err)
-			res.send('Succeed.');
-		else
-			console.log(err);
-	});
+//Add a waypoint
+router.post('/waypoint', (req, res)=> {
+	const data = {
+		trip_code: req.body.trip_code,
+		waypoint_lat: req.body.waypoint_lat,
+		waypoint_lng: req.body.waypoint_lng,
+	}
+	console.log(req.body);
+	knex('waypoint')
+	.insert(data, 'id')
+	.then( ids=> {
+		const id = ids[0];
+		res.redirect('/');
+	})
 });
 
 //Edit a route
-router.get('/routes/edit/:route_id', (req, res)=> {
+router.get('/waypoint/edit/:route_id', (req, res)=> {
 	let data = {route_name:req.query.route_name, trip_code:req.query.trip_code, latitude:req.query.latitude, longitude:req.query.longitude};
 	let sql = 'update trip set ? where route_id = ${req.params.route_id}';
 	mysqlConnection.query(sql, data, (err, result)=> {
@@ -189,6 +162,26 @@ router.get('/routes/edit/:route_id', (req, res)=> {
 		else
 			console.log(err);
 	});
+});
+
+//Delete a waypoint
+router.delete('/waypoint/:id', (req, res) =>{
+	const id = req.params.id
+	console.log('delete wp id:', id);
+	if(typeof id != 'undefined') {
+		knex('waypoint')
+		.select()
+		.where('id', id)
+		.del()
+		.then(() => {
+			res.redirect('/');
+		});
+	} else {
+		res.status(500);
+		res.render('error', {
+			message:'invalid id'
+		});
+	}
 });
 
 module.exports = router;
