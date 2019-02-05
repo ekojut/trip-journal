@@ -184,19 +184,10 @@
             var startPoint = null;
             var endPoint = null;
             var waypts = [];
+            var tcode = null;
 
-            waypoints.map(wpoint =>
-                waypts.push({
-                    location: {
-                        lat: parseFloat(wpoint.waypoint_lat),
-                        lng: parseFloat(wpoint.waypoint_lng)
-                    }
-                })
-            );
-            //console.log(waypoints);
-            
             trips.map(trip => {
-                if(id == tid){
+                if(trip.id == tid){
                     startPoint = {
                         location: {
                             lat: parseFloat(trip.start_lat),
@@ -210,13 +201,28 @@
                             lng: parseFloat(trip.end_lng)
                         }
                     };
+
+                    tcode = trip.trip_code;
                 }
             });
+
+            waypoints.map(wpoint => {
+                if(wpoint.trip_code == tcode){
+                    waypts.push({
+                        location: {
+                            lat: parseFloat(wpoint.waypoint_lat),
+                            lng: parseFloat(wpoint.waypoint_lng)
+                        }
+                    })    
+                }
+                
+            });
+            //console.log(waypoints);
               
             directionsService.route({
                 origin: startPoint,
                 destination: endPoint,
-                //waypoints: waypts,
+                waypoints: waypts,
                 optimizeWaypoints: true,
                 travelMode: 'DRIVING'
             },  function(response, status) {
@@ -228,6 +234,7 @@
                 }
             });
         }
+    }
 
       </script>
       <script async defer
