@@ -92,7 +92,7 @@ router.post('/', (req, res)=> {
 });
 
 //Update a trip
-router.patch('/:id', (req, res)=> {
+router.post('/:id', (req, res)=> {
 	const id = req.params.id
 	const trip = {
 		trip_code: req.body.trip_code,
@@ -108,7 +108,7 @@ router.patch('/:id', (req, res)=> {
 		.where('id', id)
 		.update(trip, 'id')
 		.then(() => {
-			res.render('home');
+			res.redirect('/');
 		});
 	} else {
 		res.status(500);

@@ -82,22 +82,22 @@
               </div>
               <div class="modal-body">
                <div class="form-group">
-                   <input type="text" name="trip_code" id="trip_code" class="form-control" placeholder="Code" required>
+                   <input type="text" name="trip_code" id="trip_code" class="form-control trip_code" placeholder="Code" required>
                </div>
                <div class="form-group">
-                   <input type="text" name="trip_name" id="trip_name" class="form-control" placeholder="Trip Name" required>
+                   <input type="text" name="trip_name" id="trip_name" class="form-control trip_name" placeholder="Trip Name" required>
                </div>
                <div class="form-group">
-                   <input type="text" name="start_lat" id="start_lat" class="form-control" placeholder="Start Latitude" required>
+                   <input type="text" name="start_lat" id="start_lat" class="form-control start_lat" placeholder="Start Latitude" required>
                </div>
                <div class="form-group">
-                   <input type="text" name="start_lng" id="start_lng" class="form-control" placeholder="Start Longitude" required>
+                   <input type="text" name="start_lng" id="start_lng" class="form-control start_lng" placeholder="Start Longitude" required>
                </div>
                <div class="form-group">
-                   <input type="text" name="end_lat" id="end_lat" class="form-control" placeholder="End Latitude" required>
+                   <input type="text" name="end_lat" id="end_lat" class="form-control end_lat" placeholder="End Latitude" required>
                </div>
                <div class="form-group">
-                   <input type="text" name="end_lng" id="end_lng" class="form-control" placeholder="End Longitude" required>
+                   <input type="text" name="end_lng" id="end_lng" class="form-control end_lng" placeholder="End Longitude" required>
                </div>
              </div>
               <div class="modal-footer">
@@ -165,21 +165,13 @@
                 trips.map(trip => {
                 if(trip.id == tid){
                     document.getElementById('editForm').action = "/" + tid;
-
-                    var id = $(this).data('id');
-                    var trip_code = $(this).data('trip_code');
-                    var trip_name = $(this).data('trip_name');
-                    var start_lat = $(this).data('start_lat');
-                    var start_lng = $(this).data('start_lng');
-                    var end_lat = $(this).data('end_lat');
-                    var end_lng = $(this).data('end_lng');
                     $('#EditModal').modal('show');
-                    $('.trip_code').val(trip_code);
-                    $('.trip_name').val(trip_name);
-                    $('.start_lat').val(start_lat);
-                    $('.start_lng').val(start_lng);
-                    $('.end_lat').val(end_lat);
-                    $('.end_lng').val(end_lng);
+                    $('.trip_code').val(trip.trip_code);
+                    $('.trip_name').val(trip.trip_name);
+                    $('.start_lat').val(trip.start_lat);
+                    $('.start_lng').val(trip.start_lng);
+                    $('.end_lat').val(trip.end_lat);
+                    $('.end_lng').val(trip.end_lng);
                 }
             });
             });
