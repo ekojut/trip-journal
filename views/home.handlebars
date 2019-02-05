@@ -22,8 +22,9 @@
               <form id="delete-form" action="/delete/{{ id }}?_method=DELETE" method="post">
                 <a href="/{{id}}/edit" class="btn btn-sm btn-info edit" onclick="" data-id="{{ id }}" data-name="{{ trip_name }}" data-toggle="modal" data-target="#EditModal">Edit</a>
                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                <button class="btn btn-sm btn-success" ">Rute</button>
+                
               </form>
+              <button type="" id="btn-rute" class="btn btn-sm btn-success rute" ">Rute</button>
             </td>
           </tr>
           {{/each}}
@@ -112,73 +113,107 @@
 
 <script src="/assets/js/bootstrap.js"></script>
 <script src="/assets/js/jquery-3.3.1.js"></script>
-<!-- <script>
-    $(document).ready(function(){
-      //tampilkan data ke modal untuk edit
-      $('#listtable').on('click','.edit',function(){
-        var id = $(this).data('id');
-        var trip_name = $(this).data('trip_name');
-        var trip_code = $(this).data('trip_code');
-        var start_lat = $(this).data('start_lat');
-        var start_lng = $(this).data('start_lng');
-        var end_lat = $(this).data('end_lat');
-        var end_lng = $(this).data('end_lng');
-        $('#EditModal').modal('show');
-        $('.trip_name').val(trip_name);
-        $('.trip_code').val(trip_code);
-        $('.start_lat').val(start_lat);
-        $('.start_lng').val(start_lng);
-        $('.end_lat').val(end_lat);
-        $('.end_lng').val(end_lng);
-        $('.id').val(id);
-      });
-</script> -->
-      <p></p>
-      <h1>Add Waypoint</h1>
-      <table class="table table-bordered" id="wptable">
-        <thead>
-          <form action="/waypoint" method="post">
-          <tr>
-            <th>
-              <input type="text" name="trip_code" id="trip_code" class="form-control" placeholder="Code" required>
-            </th>
-            <th>
-              <input type="text" name="waypoint_lat" id="waypoint_lat" class="form-control" placeholder="Latitude" required>
-            </th>
-            <th>
-              <input type="text" name="waypoint_lng" id="waypoint_lng" class="form-control" placeholder="Longitude" required>
-            </th>
-            <th>
-              <button type="submit" class="btn btn-sm btn-primary">Add</button>
-            </th>
-          </tr>
-          </form>
-        </thead>
-        <tbody>
-          {{#each waypoints}}
-          <tr>
-            <td>{{trip_code}}</td>
-            <td>{{waypoint_lat}}</td>
-            <td>{{waypoint_lng}}</td>
-            <td>
-              <form action="/waypoint/{{id}}?_method=DELETE" method="post">
-                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
-              </form>
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
-    <div class="col-sm-8" id="map" style="height:600px; width:800px">
-      <script type="text/javascript">
-        function initMap() {
-          var options = {
-            zoom:10,
-            center:{lat:-7.797, lng: 110.370}
-          }
 
-          var map = new google.maps.Map(document.getElementById('map'), options);
+  <p></p>
+  <h1>Add Waypoint</h1>
+  <table class="table table-bordered" id="wptable">
+    <thead>
+      <form action="/waypoint" method="post">
+      <tr>
+        <th>
+          <input type="text" name="trip_code" id="trip_code" class="form-control" placeholder="Code" required>
+        </th>
+        <th>
+          <input type="text" name="waypoint_lat" id="waypoint_lat" class="form-control" placeholder="Latitude" required>
+        </th>
+        <th>
+          <input type="text" name="waypoint_lng" id="waypoint_lng" class="form-control" placeholder="Longitude" required>
+        </th>
+        <th>
+          <button type="submit" class="btn btn-sm btn-primary">Add</button>
+        </th>
+      </tr>
+      </form>
+    </thead>
+    <tbody>
+      {{#each waypoints}}
+      <tr>
+        <td>{{trip_code}}</td>
+        <td>{{waypoint_lat}}</td>
+        <td>{{waypoint_lng}}</td>
+        <td>
+          <form action="/waypoint/{{id}}?_method=DELETE" method="post">
+            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+<div class="col-sm-8" id="map" style="height:600px; width:800px">
+  <script type="text/javascript">
+ 
+        function initMap() {
+          // var waypoints = {
+          //   trip_code:'1',
+          //   waypoint_lat:'-7.797',
+          //   waypoint_lng:'110.370'
+          // }
+
+          var directionsService = new google.maps.DirectionsService;
+          var directionsDisplay = new google.maps.DirectionsRenderer;
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom:10,
+            center:{lat:-7.797, lng: 110.370} //Yogyakarta
+            });
+
+        // document.getElementById('btn-rute').addEventListener('click', function() {
+        //   console.log('asdasd');
+        //   //calculateAndDisplayRoute(directionsService, directionsDisplay);
+        // });
+
+        //directionsDisplay.setMap(map);
+
+
+        // function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  
+        // var waypts = [];
+        // waypoints.map(p =>
+        //   waypts.push({
+        //     location: {
+        //       lat: parseFloat(p.latitude),
+        //       lng: parseFloat(p.longitude)
+        //     }
+        //   })
+        console.log(waypoints);
+
+          
+        //   directionsService.route({
+        //     origin: document.getElementById('start').value,
+        //     destination: document.getElementById('end').value,
+        //     waypoints: waypts,
+        //     optimizeWaypoints: true,
+        //     travelMode: 'DRIVING'
+        //   }, function(response, status) {
+        //     if (status === 'OK') {
+        //       directionsDisplay.setDirections(response);
+        //       var route = response.routes[0];
+        //       var summaryPanel = document.getElementById('directions-panel');
+        //       summaryPanel.innerHTML = '';
+        //       // For each route, display summary information.
+        //       for (var i = 0; i < route.legs.length; i++) {
+        //         var routeSegment = i + 1;
+        //         summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+        //             '</b><br>';
+        //         summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        //         summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+        //         summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+        //       }
+        //     } else {
+        //       window.alert('Directions request failed due to ' + status);
+        //     }
+        // });
 
           // var marker = new google.maps.Marker({
           //   position:{lat:-7.797, lng: 110.370},

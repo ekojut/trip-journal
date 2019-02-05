@@ -4,7 +4,6 @@ var mysql = require('mysql');
 
 const knex = require('../db/knex');
 
-
 // var mysqlConnection = mysql.createConnection({
 // 	host:'localhost',
 // 	user:'root',
@@ -35,6 +34,7 @@ router.get('/', function(req, res, next) {
 		})
 	})
 });
+
 
 //Get all trips
 router.get('/', (req, res) =>{
@@ -132,6 +132,25 @@ router.delete('/delete/:id', (req, res) =>{
 		res.status(500);
 		res.render('error', {
 			message:'invalid id'
+		});
+	}
+});
+
+router.get('/waypoint/:trip_code', (req, res) =>{
+	const tcode = req.params.trip_code
+	if(typeof trip_code != 'undefined') {
+		knex('waypoint')
+		.where('trip_code', tcode)
+		.select()
+		.first()
+		.then(waypoints => {
+			console.log('waypoints:',waypoints);
+			res.json({waypoints: waypoints});
+		});
+	} else {
+		res.status(500);
+		res.render('error', {
+			message:'invalid trip_code'
 		});
 	}
 });
