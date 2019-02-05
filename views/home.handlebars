@@ -22,7 +22,7 @@
               <form id="delete-form" action="/delete/{{ id }}?_method=DELETE" method="post">
                 <a href="/{{id}}/edit" class="btn btn-sm btn-info edit" onclick="" data-id="{{ id }}" data-name="{{ trip_name }}" data-toggle="modal" data-target="#EditModal">Edit</a>
                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                <button class="btn btn-sm btn-info" onclick="" data-id="{{ id }}" data-name="{{ trip_name }}">Rute</button>
+                <button class="btn btn-sm btn-success" ">Rute</button>
               </form>
             </td>
           </tr>
@@ -82,10 +82,10 @@
               </div>
               <div class="modal-body">
                <div class="form-group">
-                   <input type="text" name="trip-code" id="trip-code" class="form-control" placeholder="Code" required>
+                   <input type="text" name="trip_code" id="trip_code" class="form-control" placeholder="Code" required>
                </div>
                <div class="form-group">
-                   <input type="text" name="trip-name" id="trip-name" class="form-control" placeholder="Trip Name" required>
+                   <input type="text" name="trip_name" id="trip_name" class="form-control" placeholder="Trip Name" required>
                </div>
                <div class="form-group">
                    <input type="text" name="start_lat" id="start_lat" class="form-control" placeholder="Start Latitude" required>
@@ -135,11 +135,12 @@
 </script> -->
       <p></p>
       <h1>Add Waypoint</h1>
-      <table class="table table-bordered" id="listtable">
+      <table class="table table-bordered" id="wptable">
         <thead>
+          <form action="/waypoint" method="post">
           <tr>
             <th>
-              <input type="text" name="trip-code" id="trip-code" class="form-control" placeholder="Code" required>
+              <input type="text" name="trip_code" id="trip_code" class="form-control" placeholder="Code" required>
             </th>
             <th>
               <input type="text" name="waypoint_lat" id="waypoint_lat" class="form-control" placeholder="Latitude" required>
@@ -148,11 +149,10 @@
               <input type="text" name="waypoint_lng" id="waypoint_lng" class="form-control" placeholder="Longitude" required>
             </th>
             <th>
-              <form action="/waypoint" method="post">
-                <button type="submit" class="btn btn-sm btn-info">Add</button>
-              </form>
+              <button type="submit" class="btn btn-sm btn-primary">Add</button>
             </th>
           </tr>
+          </form>
         </thead>
         <tbody>
           {{#each waypoints}}

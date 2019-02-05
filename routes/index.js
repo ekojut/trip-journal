@@ -152,18 +152,6 @@ router.post('/waypoint', (req, res)=> {
 	})
 });
 
-//Edit a route
-router.get('/waypoint/edit/:route_id', (req, res)=> {
-	let data = {route_name:req.query.route_name, trip_code:req.query.trip_code, latitude:req.query.latitude, longitude:req.query.longitude};
-	let sql = 'update trip set ? where route_id = ${req.params.route_id}';
-	mysqlConnection.query(sql, data, (err, result)=> {
-		if (!err)
-			res.send('Succeed.');
-		else
-			console.log(err);
-	});
-});
-
 //Delete a waypoint
 router.delete('/waypoint/:id', (req, res) =>{
 	const id = req.params.id
