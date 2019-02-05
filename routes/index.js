@@ -30,7 +30,9 @@ router.get('/', function(req, res, next) {
 	.then(function(waypoints){
 		res.render('home',{
 			waypoints: waypoints,
-			trips:trips
+			trips:trips,
+			waypoints_json: JSON.stringify(waypoints),
+			trips_json: JSON.stringify(trips)
 		})
 	})
 });

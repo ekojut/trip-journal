@@ -22,9 +22,8 @@
               <form id="delete-form" action="/delete/{{ id }}?_method=DELETE" method="post">
                 <a href="/{{id}}/edit" class="btn btn-sm btn-info edit" onclick="" data-id="{{ id }}" data-name="{{ trip_name }}" data-toggle="modal" data-target="#EditModal">Edit</a>
                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                
               </form>
-              <button type="" id="btn-rute" class="btn btn-sm btn-success rute" ">Rute</button>
+              <button type="" id="btn-rute" data-id={{id}} class="btn btn-sm btn-success rute" ">Rute</button>
             </td>
           </tr>
           {{/each}}
@@ -111,8 +110,8 @@
          </div>
     </form>
 
-<script src="/assets/js/bootstrap.js"></script>
-<script src="/assets/js/jquery-3.3.1.js"></script>
+<!-- <script src="/assets/js/bootstrap.js"></script>
+<script src="/assets/js/jquery-3.3.1.js"></script> -->
 
   <p></p>
   <h1>Add Waypoint</h1>
@@ -155,11 +154,9 @@
   <script type="text/javascript">
  
         function initMap() {
-          // var waypoints = {
-          //   trip_code:'1',
-          //   waypoint_lat:'-7.797',
-          //   waypoint_lng:'110.370'
-          // }
+
+          let trips = JSON.parse('{{{trips_json}}}');
+          let waypoints = JSON.parse('{{{waypoints_json}}}');
 
           var directionsService = new google.maps.DirectionsService;
           var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -168,62 +165,67 @@
             center:{lat:-7.797, lng: 110.370} //Yogyakarta
             });
 
-        // document.getElementById('btn-rute').addEventListener('click', function() {
-        //   console.log('asdasd');
-        //   //calculateAndDisplayRoute(directionsService, directionsDisplay);
-        // });
+          directionsDisplay.setMap(map);
 
-        //directionsDisplay.setMap(map);
+        var btnRutes = document.getElementsByClassName('rute')
+
+        for (var i = btnRutes.length - 1; i >= 0; i--) {
+            let tid = btnRutes[i].dataset['id'];
+            btnRutes[i]
+            .addEventListener('click', function() {
+            calculateAndDisplayRoute(directionsService, directionsDisplay, tid);
+            });
+
+        }
 
 
-        // function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-  
-        // var waypts = [];
-        // waypoints.map(p =>
-        //   waypts.push({
-        //     location: {
-        //       lat: parseFloat(p.latitude),
-        //       lng: parseFloat(p.longitude)
-        //     }
-        //   })
-        console.log(waypoints);
+        function calculateAndDisplayRoute(directionsService, directionsDisplay, tid) {
+                
+            var waypts = [];
+            waypoints.map(item =>
+              waypts.push({
+                location: {
+                  lat: parseFloat(item.waypoint_lat),
+                  lng: parseFloat(item.waypoint_lng)
+                }
+              }));
+            //console.log(waypoints);
+            var startPoint = [];
+            trips.map(item =>
+              startPoint.push({
+                location: {
+                  lat: parseFloat(item.start_lat),
+                  lng: parseFloat(item.start_lng)
+                }
+            }));
+            console.log(startPoint[0]);
 
-          
-        //   directionsService.route({
-        //     origin: document.getElementById('start').value,
-        //     destination: document.getElementById('end').value,
-        //     waypoints: waypts,
-        //     optimizeWaypoints: true,
-        //     travelMode: 'DRIVING'
-        //   }, function(response, status) {
-        //     if (status === 'OK') {
-        //       directionsDisplay.setDirections(response);
-        //       var route = response.routes[0];
-        //       var summaryPanel = document.getElementById('directions-panel');
-        //       summaryPanel.innerHTML = '';
-        //       // For each route, display summary information.
-        //       for (var i = 0; i < route.legs.length; i++) {
-        //         var routeSegment = i + 1;
-        //         summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-        //             '</b><br>';
-        //         summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-        //         summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-        //         summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-        //       }
-        //     } else {
-        //       window.alert('Directions request failed due to ' + status);
-        //     }
-        // });
+            var endPoint = [];
+            trips.map(item =>
+              endPoint.push({
+                location: {
+                  lat: parseFloat(item.end_lat),
+                  lng: parseFloat(item.end_lng)
+                }
+              }));
+              console.log(endPoint[0]);
 
-          // var marker = new google.maps.Marker({
-          //   position:{lat:-7.797, lng: 110.370},
-          //   map:map,
-
-          // });
-          // var marker1 = new google.maps.Marker({
-          //   position:{lat:-8.650, lng: 115.216},
-          //   map:map,
-          // });
+              
+            directionsService.route({
+            origin: startPoint[0],
+            destination: endPoint[0],
+            //waypoints: waypts,
+            optimizeWaypoints: true,
+            travelMode: 'DRIVING'
+            }, function(response, status) {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+                  var route = response.routes[0];
+                } else {
+                  window.alert('Directions request failed due to ' + status);
+                }
+            });
+        }
         } 
       </script>
       <script async defer
