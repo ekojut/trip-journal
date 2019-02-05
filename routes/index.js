@@ -92,7 +92,7 @@ router.post('/', (req, res)=> {
 });
 
 //Update a trip
-router.put('/:id', (req, res)=> {
+router.patch('/:id', (req, res)=> {
 	const id = req.params.id
 	const trip = {
 		trip_code: req.body.trip_code,
@@ -134,25 +134,6 @@ router.delete('/delete/:id', (req, res) =>{
 		res.status(500);
 		res.render('error', {
 			message:'invalid id'
-		});
-	}
-});
-
-router.get('/waypoint/:trip_code', (req, res) =>{
-	const tcode = req.params.trip_code
-	if(typeof trip_code != 'undefined') {
-		knex('waypoint')
-		.where('trip_code', tcode)
-		.select()
-		.first()
-		.then(waypoints => {
-			console.log('waypoints:',waypoints);
-			res.json({waypoints: waypoints});
-		});
-	} else {
-		res.status(500);
-		res.render('error', {
-			message:'invalid trip_code'
 		});
 	}
 });

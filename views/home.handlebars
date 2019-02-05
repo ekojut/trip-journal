@@ -20,7 +20,7 @@
             <td>{{trip_name}}</td>
             <td>
               <form id="delete-form" action="/delete/{{ id }}?_method=DELETE" method="post">
-                <a href="/{{id}}/edit" class="btn btn-sm btn-info edit" onclick="" data-id="{{ id }}" data-name="{{ trip_name }}" data-toggle="modal" data-target="#EditModal">Edit</a>
+                <a class="btn btn-sm btn-info edit" onclick="" data-id="{{ id }}" data-name="{{ trip_name }}" data-toggle="modal" data-target="#EditModal">Edit</a>
                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
               </form>
               <button type="" id="btn-rute" data-id={{id}} class="btn btn-sm btn-success rute" ">Rute</button>
@@ -70,7 +70,7 @@
         </div>
      </form>
      <!-- Modal Edit Trip-->
-     <form action="/{{id}}?_method=PUT" method="post">
+     <form action="/{{id}}?_method=PATCH" method="PATCH" id="editForm">
          <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -110,8 +110,8 @@
          </div>
     </form>
 
-<!-- <script src="/assets/js/bootstrap.js"></script>
-<script src="/assets/js/jquery-3.3.1.js"></script> -->
+<script src="/assets/js/bootstrap.js"></script>
+<script src="/assets/js/jquery-3.3.1.js"></script>
 
   <p></p>
   <h1>Add Waypoint</h1>
@@ -152,11 +152,25 @@
 </div>
 <div class="col-sm-8" id="map" style="height:600px; width:800px">
   <script type="text/javascript">
- 
-        function initMap() {
 
-          let trips = JSON.parse('{{{trips_json}}}');
-          let waypoints = JSON.parse('{{{waypoints_json}}}');
+        let trips = JSON.parse('{{{trips_json}}}');
+        let waypoints = JSON.parse('{{{waypoints_json}}}');
+        
+        var btnEdits = document.getElementsByClassName('edit')
+
+        for (var i = btnEdits.length - 1; i >= 0; i--) {
+            let tid = btnEdits[i].dataset['id'];
+            btnEdits[i]
+            .addEventListener('click', function() {
+                trips.map(trip => {
+                if(trip.id == tid){
+                    document.getElementById('editForm').action = "/:tid";
+                }
+            });
+            });
+        }
+
+        function initMap() {
 
           var directionsService = new google.maps.DirectionsService;
           var directionsDisplay = new google.maps.DirectionsRenderer;
